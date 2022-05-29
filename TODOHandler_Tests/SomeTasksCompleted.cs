@@ -43,13 +43,13 @@ namespace TODOHandler_Tests
         private void AddAnotherTaskAndCompleteTheFirstOne()
         {
             string[] arguments = new string[]
-                        {
+            {
                 "task",
                 "-t",
                 "Clean windows",
                 "-d",
                 "2022-10-01"
-                        };
+            };
 
             handler.Handle(arguments);
 

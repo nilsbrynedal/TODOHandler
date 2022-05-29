@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
+/// <summary>
+/// Test driven implementation of http://www.tddbuddy.com/katas/Todo%20List.pdf
+/// </summary>
 namespace TODOHandler
 {
     public class ToDoHandler
