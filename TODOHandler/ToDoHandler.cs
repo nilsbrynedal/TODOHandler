@@ -8,12 +8,12 @@ namespace TODOHandler
 {
     public class ToDoHandler
     {
-        private readonly Stream stream;
         private readonly TextWriter consoleWriter;
+        private readonly IDatabase database;
 
-        public ToDoHandler(Stream stream, TextWriter consoleWriter = null)
+        public ToDoHandler(IDatabase database, TextWriter consoleWriter = null)
         {
-            this.stream = stream;
+            this.database = database;
             this.consoleWriter = consoleWriter;
         }
 
@@ -54,83 +54,31 @@ namespace TODOHandler
 
         private void CompleteTask(string ID)
         {
-            bool found = false;
-
-            List<string> allLines = new List<string>();
-            stream.Position = 0;
-            var reader = new StreamReader(stream);
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
-                if(line.StartsWith(ID))
-                {
-                    found = true;
-
-                    string[] parts = line.Split(';');
-                    parts[2] = "Complete";
-                    line = parts[0] + ";" + parts[1] + ";" + parts[2];
-                }
-                allLines.Add(line);
-            }
-
-            if(found)
-            {
-                stream.SetLength(0);
-                StreamWriter writer = new StreamWriter(stream);
-                allLines.ForEach(line => writer.WriteLine(line));
-                writer.Flush();
-
-                consoleWriter?.Write("Task completed.\n");
-            }
-            else
-            {
-                consoleWriter.Write("Error: Task ID not found.\n");
-            }
+            bool found = database.CompleteTask(int.Parse(ID));
+            string message = found ? "Task completed.\n" : "Error: Task ID not found.\n";
+            consoleWriter.Write(message);
         }
 
         private void ReadTasks(bool allTasks)
         {
-            stream.Position = 0;
-            StreamReader reader = new StreamReader(stream);
+            var tasks = database.ReadAllTasks();
 
-            while (!reader.EndOfStream)
+            if(!allTasks)
             {
-                string[] parts = reader.ReadLine().Split(';');
-
-                if (allTasks || parts[2] != "Complete")
-                {
-                    string toPrint = "ID: " + parts[0] + "\nTask: " + parts[1] + "\nDue: " + parts[2] + "\n";
-                    consoleWriter?.Write(toPrint);
-                }
+                tasks = tasks.FindAll(task => task.Due != "Complete");
             }
-            reader.Close();
+
+            foreach (var task in tasks)
+            {
+                string toPrint = "ID: " + task.ID.ToString() + "\nTask: " + task.Description + "\nDue: " + task.Due + "\n";
+                consoleWriter?.Write(toPrint);
+            }
         }
 
         private void AddTask(string[] args)
         {
-            int count = CountLines();
-            StreamWriter s = new StreamWriter(stream);
-            string toAdd = count.ToString() + ";" + args[2] + ";" + args[4];
-            s.WriteLine(toAdd);
-            s.Flush();
-
+            database.Add(new List<string>() { args[2], args[4] });
             consoleWriter?.Write("Task added.\n");
-        }
-
-        private int CountLines()
-        {
-            int count = 1;
-            int value;
-            stream.Position = 0;
-            do
-            {
-                value = stream.ReadByte();
-                if (value == 13) // new line character
-                {
-                    count++;
-                }
-            } while (value != -1);
-            return count;
         }
     }
 }

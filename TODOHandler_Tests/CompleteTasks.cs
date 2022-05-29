@@ -20,7 +20,7 @@ namespace TODOHandler_Tests
             fileStream = new MemoryStream();
             consoleStream = new MemoryStream();
             writer = new StreamWriter(consoleStream);
-            handler = new ToDoHandler(fileStream, writer);
+            handler = new ToDoHandler(new CSVDatabase(fileStream), writer);
             string[] arguments = new string[]
             {
                 "task",
@@ -106,8 +106,6 @@ namespace TODOHandler_Tests
 
             // contents of the file shall be unchanged
             Assert.AreEqual("1;Complete Application;2018-04-01\r\n", content);
-
-            content = Encoding.ASCII.GetString(consoleStream.ToArray());
         }
 
         [TestMethod]

@@ -12,7 +12,7 @@ namespace TODOHandler_Tests
         public void ShallAddTask()
         {
             MemoryStream stream = new MemoryStream();
-            ToDoHandler handler = new ToDoHandler(stream);
+            ToDoHandler handler = new ToDoHandler(new CSVDatabase(stream));
 
             string[] arguments = new string[]
             {
@@ -35,7 +35,7 @@ namespace TODOHandler_Tests
             MemoryStream fileStream = new MemoryStream();
             MemoryStream consoleStream = new MemoryStream();
             StreamWriter writer = new StreamWriter(consoleStream);
-            ToDoHandler handler = new ToDoHandler(fileStream, writer);
+            ToDoHandler handler = new ToDoHandler(new CSVDatabase(fileStream), writer);
 
             string[] arguments = new string[]
             {
@@ -56,7 +56,7 @@ namespace TODOHandler_Tests
         public void ShallAddTask_DifferentDate_DifferentTask()
         {
             MemoryStream stream = new MemoryStream();
-            ToDoHandler handler = new ToDoHandler(stream);
+            ToDoHandler handler = new ToDoHandler(new CSVDatabase(stream));
 
             string[] arguments = new string[]
             {
@@ -77,7 +77,7 @@ namespace TODOHandler_Tests
         public void AddOneTaskAfterAnother()
         {
             MemoryStream stream = new MemoryStream();
-            ToDoHandler handler1 = new ToDoHandler(stream);
+            ToDoHandler handler1 = new ToDoHandler(new CSVDatabase(stream));
             string[] arguments1 = new string[]
             {
                 "task",
@@ -88,7 +88,7 @@ namespace TODOHandler_Tests
             };
             handler1.Handle(arguments1);
 
-            ToDoHandler handler2 = new ToDoHandler(stream);
+            ToDoHandler handler2 = new ToDoHandler(new CSVDatabase(stream));
 
             string[] arguments2 = new string[]
             {
@@ -109,7 +109,7 @@ namespace TODOHandler_Tests
         public void ThreeTasks()
         {
             MemoryStream stream = new MemoryStream();
-            ToDoHandler handler = new ToDoHandler(stream);
+            ToDoHandler handler = new ToDoHandler(new CSVDatabase(stream));
             string[] arguments = new string[]
             {
                 "task",

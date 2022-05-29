@@ -20,7 +20,7 @@ namespace TODOHandler
                 stream = File.Open(path, FileMode.Open);
             }
 
-            ToDoHandler handler = new ToDoHandler(stream, Console.Out);
+            ToDoHandler handler = new ToDoHandler(new CSVDatabase(stream), Console.Out);
             handler.Handle(args);
         }
     }

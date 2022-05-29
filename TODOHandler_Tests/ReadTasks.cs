@@ -14,7 +14,7 @@ namespace TODOHandler_Tests
             MemoryStream fileStream = new MemoryStream();
             MemoryStream consoleStream = new MemoryStream();
             StreamWriter writer = new StreamWriter(consoleStream);            
-            ToDoHandler handler = new ToDoHandler(fileStream, writer);
+            ToDoHandler handler = new ToDoHandler(new CSVDatabase(fileStream), writer);
 
             string[] arguments = new string[]
             {
@@ -28,7 +28,7 @@ namespace TODOHandler_Tests
             handler.Handle(arguments);
             consoleStream.Position = 0; // zeros the console stream so that text added by the previous call isn't included below
 
-            handler = new ToDoHandler(fileStream, writer);
+            handler = new ToDoHandler(new CSVDatabase(fileStream), writer);
 
             arguments = new string[]
             {
@@ -49,7 +49,7 @@ namespace TODOHandler_Tests
             MemoryStream fileStream = new MemoryStream();
             MemoryStream consoleStream = new MemoryStream();
             StreamWriter writer = new StreamWriter(consoleStream);
-            ToDoHandler handler = new ToDoHandler(fileStream, writer);
+            ToDoHandler handler = new ToDoHandler(new CSVDatabase(fileStream), writer);
 
             string[] arguments = new string[]
             {
@@ -63,7 +63,7 @@ namespace TODOHandler_Tests
             handler.Handle(arguments);
             consoleStream.Position = 0; // zeros the console stream so that text added by the previous call isn't included below
 
-            handler = new ToDoHandler(fileStream, writer);
+            handler = new ToDoHandler(new CSVDatabase(fileStream), writer);
 
             arguments = new string[]
             {
@@ -84,7 +84,7 @@ namespace TODOHandler_Tests
             MemoryStream fileStream = new MemoryStream();
             MemoryStream consoleStream = new MemoryStream();
             StreamWriter writer = new StreamWriter(consoleStream);
-            ToDoHandler handler = new ToDoHandler(fileStream, writer);
+            ToDoHandler handler = new ToDoHandler(new CSVDatabase(fileStream), writer);
 
             string[] arguments = new string[]
             {
