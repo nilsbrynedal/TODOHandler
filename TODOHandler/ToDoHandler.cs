@@ -11,6 +11,11 @@ namespace TODOHandler
         private readonly TextWriter consoleWriter;
         private readonly IDatabase database;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="database">Any working implementation of the IDatabase interface</param>
+        /// <param name="consoleWriter">TextWriter from the console (for output to user)</param>
         public ToDoHandler(IDatabase database, TextWriter consoleWriter = null)
         {
             this.database = database;
@@ -28,7 +33,7 @@ namespace TODOHandler
 
             if (args[0] == "task")
             {
-                AddTask(args);
+                AddTask(args[2], args[4]);
             }
             else if(args[0] == "-c")  // completed task
             {
@@ -75,9 +80,9 @@ namespace TODOHandler
             }
         }
 
-        private void AddTask(string[] args)
+        private void AddTask(string description, string due)
         {
-            database.Add(new List<string>() { args[2], args[4] });
+            database.Add(new List<string>() { description, due });
             consoleWriter?.Write("Task added.\n");
         }
     }
