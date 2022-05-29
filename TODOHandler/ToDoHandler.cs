@@ -33,10 +33,20 @@ namespace TODOHandler
             }
             else
             {
-                bool allTasks = args[1] == "All";
-                ReadTasks(allTasks);
+                ReadTasks(ShowAllTasks(args));
             }
             consoleWriter?.Flush();
+        }
+
+        private static bool ShowAllTasks(string[] args)
+        {
+            bool allTasks = true;
+            if (args.Length > 1)
+            {
+                allTasks = args[1] == "All";
+            }
+
+            return allTasks;
         }
 
         private void CompleteTask(string ID)
