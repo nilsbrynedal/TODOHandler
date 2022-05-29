@@ -9,10 +9,10 @@ namespace TODOHandler_Tests
     [TestClass]
     public class CompleteTasks
     {
-        private MemoryStream fileStream;
-        private ToDoHandler handler;
-        private MemoryStream consoleStream;
-        private StreamWriter writer;
+        protected MemoryStream fileStream;
+        protected ToDoHandler handler;
+        protected MemoryStream consoleStream;
+        protected StreamWriter writer;
 
         [TestInitialize]
         public void SetUp()
@@ -61,6 +61,33 @@ namespace TODOHandler_Tests
 
             var content = Encoding.ASCII.GetString(fileStream.ToArray());
             Assert.AreEqual("1;Complete Application;Complete\r\n", content);
+        }
+
+        
+        [TestMethod]
+        public void CompletingAnExistingTaskShallNotAffectOtherTasks()
+        {
+            string[] arguments = new string[]
+            {
+                "task",
+                "-t",
+                "Take a walk",
+                "-d",
+                "2022-04-01"
+            };
+            handler.Handle(arguments);
+            consoleStream.Position = 0;
+
+            arguments = new string[]
+            {
+                "-c",
+                "1"
+            };
+
+            handler.Handle(arguments);
+
+            var content = Encoding.ASCII.GetString(fileStream.ToArray());
+            Assert.AreEqual("1;Complete Application;Complete\r\n2;Take a walk;2022-04-01\r\n", content);
         }
 
 

@@ -33,7 +33,8 @@ namespace TODOHandler
             }
             else
             {
-                ReadTasks();
+                bool allTasks = args[1] == "All";
+                ReadTasks(allTasks);
             }
             consoleWriter?.Flush();
         }
@@ -74,7 +75,7 @@ namespace TODOHandler
             }
         }
 
-        private void ReadTasks()
+        private void ReadTasks(bool allTasks)
         {
             stream.Position = 0;
             StreamReader reader = new StreamReader(stream);
@@ -82,8 +83,12 @@ namespace TODOHandler
             while (!reader.EndOfStream)
             {
                 string[] parts = reader.ReadLine().Split(';');
-                string toPrint = "ID: " + parts[0] + "\nTask: " + parts[1] + "\nDue: " + parts[2] + "\n";
-                consoleWriter?.Write(toPrint);
+
+                if (allTasks || parts[2] != "Complete")
+                {
+                    string toPrint = "ID: " + parts[0] + "\nTask: " + parts[1] + "\nDue: " + parts[2] + "\n";
+                    consoleWriter?.Write(toPrint);
+                }
             }
             reader.Close();
         }
