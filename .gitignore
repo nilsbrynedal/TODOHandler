@@ -1,0 +1,16 @@
+"" 
+*.exe
+*.o
+**/Debug/*
+**/Release/*
+**/bin/*
+**/obj/*
+*.suo
+*.zip
+*Properties*
+**.vs/*
+*Packages/*
+*/TestResults*
+*.vs*
+*/docs/*
+*User*

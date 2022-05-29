@@ -30,6 +30,29 @@ namespace TODOHandler_Tests
         }
 
         [TestMethod]
+        public void ShallPrintConfirmationAfterAddingTask()
+        {
+            MemoryStream fileStream = new MemoryStream();
+            MemoryStream consoleStream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(consoleStream);
+            ToDoHandler handler = new ToDoHandler(fileStream, writer);
+
+            string[] arguments = new string[]
+            {
+                "task",
+                "-t",
+                "Complete Application",
+                "-d",
+                "2018-04-01"
+            };
+
+            handler.Handle(arguments);
+
+            var content = Encoding.ASCII.GetString(consoleStream.ToArray());
+            Assert.AreEqual("Task added.\n", content);
+        }
+
+        [TestMethod]
         public void ShallAddTask_DifferentDate_DifferentTask()
         {
             MemoryStream stream = new MemoryStream();
