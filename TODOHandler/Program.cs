@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace TODOHandler
 {
@@ -10,6 +7,21 @@ namespace TODOHandler
     {
         static void Main(string[] args)
         {
+            const string path = "data.csv";
+
+            FileStream stream;
+
+            if(!File.Exists(path))
+            {
+                stream = File.Create(path);
+            }
+            else
+            {
+                stream = File.Open(path, FileMode.Open);
+            }
+
+            ToDoHandler handler = new ToDoHandler(stream, Console.Out);
+            handler.Handle(args);
         }
     }
 }
