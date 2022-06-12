@@ -52,10 +52,12 @@
     <Compile Include="AddTasksTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadTasks.cs" />
-    <Compile Include="CompleteTasks.cs" />
-    <Compile Include="SomeTasksCompleted.cs" />
-    <Compile Include="DatabaseTests.cs" />
+    <Compile Include="BaseTestClasses\CompleteTasksBase.cs" />
+    <Compile Include="BaseTestClasses\SomeTasksCompletedBase.cs" />
+    <Compile Include="BaseTestClasses\DatabaseTestsBase.cs" />
     <Compile Include="CSVDatabaseTests.cs" />
+    <Compile Include="CompleteTasksWithCSVDatabase.cs" />
+    <Compile Include="SomeTasksCompletedWithCSVDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

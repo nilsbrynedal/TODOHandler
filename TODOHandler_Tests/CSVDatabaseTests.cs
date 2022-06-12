@@ -8,7 +8,7 @@ namespace TODOHandler_Tests
     /// Tests for CSVDatabase. Uses all the tests in DatabaseTester.
     /// </summary>
     [TestClass]
-    public class CSVDatabaseTests : DatabaseTests
+    public class CSVDatabaseTests : DatabaseTestsBase
     {
         private IDatabase instance;
 

@@ -7,7 +7,7 @@ namespace TODOHandler_Tests
     /// Tests for any instance of IDatabase.
     /// </summary>
     [TestClass]
-    public abstract class DatabaseTests
+    public abstract class DatabaseTestsBase
     {
         /// <summary>
         /// Override this method to implement the tests

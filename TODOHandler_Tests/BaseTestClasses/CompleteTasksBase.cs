@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.IO;
 using System.Text;
 using TODOHandler;
@@ -7,20 +6,18 @@ using TODOHandler;
 namespace TODOHandler_Tests
 {
     [TestClass]
-    public class CompleteTasks
+    public abstract class CompleteTasksBase
     {
-        protected MemoryStream fileStream;
-        protected ToDoHandler handler;
         protected MemoryStream consoleStream;
         protected StreamWriter writer;
+
+        protected abstract ToDoHandler GetHandler();
 
         [TestInitialize]
         public void SetUp()
         {
-            fileStream = new MemoryStream();
             consoleStream = new MemoryStream();
             writer = new StreamWriter(consoleStream);
-            handler = new ToDoHandler(new CSVDatabase(fileStream), writer);
             string[] arguments = new string[]
             {
                 "task",
@@ -29,7 +26,7 @@ namespace TODOHandler_Tests
                 "-d",
                 "2018-04-01"
             };
-            handler.Handle(arguments);
+            GetHandler().Handle(arguments);
             consoleStream.Position = 0;
         }
 
@@ -42,7 +39,7 @@ namespace TODOHandler_Tests
                 "1"
             };
 
-            handler.Handle(arguments);
+            GetHandler().Handle(arguments);
 
             var content = Encoding.ASCII.GetString(consoleStream.ToArray());
             Assert.AreEqual("Task completed.\n", content);
@@ -57,16 +54,17 @@ namespace TODOHandler_Tests
                 "1"
             };
 
-            handler.Handle(arguments);
+            GetHandler().Handle(arguments);
 
-            var content = Encoding.ASCII.GetString(fileStream.ToArray());
-            Assert.AreEqual("1;Complete Application;Complete\r\n", content);
+            var content = Encoding.ASCII.GetString(consoleStream.ToArray());
+            Assert.AreEqual("Task completed.\n", content);
         }
 
         
         [TestMethod]
         public void CompletingAnExistingTaskShallNotAffectOtherTasks()
         {
+            // add a task
             string[] arguments = new string[]
             {
                 "task",
@@ -75,37 +73,56 @@ namespace TODOHandler_Tests
                 "-d",
                 "2022-04-01"
             };
-            handler.Handle(arguments);
+            GetHandler().Handle(arguments);
             consoleStream.Position = 0;
 
+            // complete one task
             arguments = new string[]
             {
                 "-c",
                 "1"
             };
+            GetHandler().Handle(arguments);
+            consoleStream.Position = 0;
 
-            handler.Handle(arguments);
+            // list tasks
+            arguments = new string[]
+            {
+                "list",
+                "All"
+            };
+            GetHandler().Handle(arguments);
 
-            var content = Encoding.ASCII.GetString(fileStream.ToArray());
-            Assert.AreEqual("1;Complete Application;Complete\r\n2;Take a walk;2022-04-01\r\n", content);
+            var content = Encoding.ASCII.GetString(consoleStream.ToArray());
+            Assert.AreEqual("ID: 1\nTask: Complete Application\nDue: Complete\nID: 2\nTask: Take a walk\nDue: 2022-04-01\n", content);
         }
 
 
         [TestMethod]
         public void CompletingNonExistingTaskShallNotChangeFileContents()
         {
+            // arguments to complete a task that does not exist:
             string[] arguments = new string[]
             {
                 "-c",
                 "2"
             };
+            GetHandler().Handle(arguments);
 
-            handler.Handle(arguments);
+            var content = Encoding.ASCII.GetString(consoleStream.ToArray());
+            Assert.AreEqual("Error: Task ID not found.\n", content);
+            consoleStream.Position = 0; // remove any previously read contet
 
-            var content = Encoding.ASCII.GetString(fileStream.ToArray());
+            // arcuments to list everything
+            arguments = new string[]
+            {
+                "list",
+                "all"
+            };
+            GetHandler().Handle(arguments);
 
-            // contents of the file shall be unchanged
-            Assert.AreEqual("1;Complete Application;2018-04-01\r\n", content);
+            content = Encoding.ASCII.GetString(consoleStream.ToArray());
+            Assert.AreEqual("ID: 1\nTask: Complete Application\nDue: 2018-04-01\n", content);
         }
 
         [TestMethod]
@@ -117,7 +134,7 @@ namespace TODOHandler_Tests
                 "2"
             };
 
-            handler.Handle(arguments);
+            GetHandler().Handle(arguments);
 
             var content = Encoding.ASCII.GetString(consoleStream.ToArray());
 
