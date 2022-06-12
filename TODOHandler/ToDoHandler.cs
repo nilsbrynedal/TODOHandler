@@ -4,7 +4,8 @@
 /// Test driven implementation of http://www.tddbuddy.com/katas/Todo%20List.pdf
 /// 
 /// TODO:
-/// * Add tests for arbitrary implementation of IDatabase, DONE (more or less...)
+/// * Add tests for arbitrary implementation of IDatabase. DONE (more or less...)
+/// * Create tests for some other implementation of IDatabase, e.g. based on Excel. DONE (some tests added)
 /// * Add some other implementation of IDatabase, e.g. based on Excel
 /// * Add subtasks
 /// 

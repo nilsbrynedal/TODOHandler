@@ -58,6 +58,7 @@
     <Compile Include="CSVDatabaseTests.cs" />
     <Compile Include="CompleteTasksWithCSVDatabase.cs" />
     <Compile Include="SomeTasksCompletedWithCSVDatabase.cs" />
+    <Compile Include="ExcelDatabaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
