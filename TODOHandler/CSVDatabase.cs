@@ -12,11 +12,11 @@ namespace TODOHandler
             this.stream = stream;
         }
 
-        public void Add(List<string> line)
+        public void Add(string description, string due)
         {
             int count = CountLines();
             StreamWriter s = new StreamWriter(stream);
-            string toAdd = count.ToString() + ";" + line[0] + ";" + line[1];
+            string toAdd = count.ToString() + ";" + description + ";" + due;
             s.WriteLine(toAdd);
             s.Flush();
         }

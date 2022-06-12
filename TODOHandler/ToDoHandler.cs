@@ -3,6 +3,12 @@ using System.IO;
 
 /// <summary>
 /// Test driven implementation of http://www.tddbuddy.com/katas/Todo%20List.pdf
+/// 
+/// TODO:
+/// * Add tests for arbitrary implementation of IDatabase
+/// * Add some other implementation of IDatabase, e.g. based on Excel
+/// * Add subtasks
+/// 
 /// </summary>
 namespace TODOHandler
 {
@@ -82,7 +88,7 @@ namespace TODOHandler
 
         private void AddTask(string description, string due)
         {
-            database.Add(new List<string>() { description, due });
+            database.Add(description, due);
             consoleWriter?.Write("Task added.\n");
         }
     }

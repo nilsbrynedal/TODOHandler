@@ -54,6 +54,8 @@
     <Compile Include="ReadTasks.cs" />
     <Compile Include="CompleteTasks.cs" />
     <Compile Include="SomeTasksCompleted.cs" />
+    <Compile Include="DatabaseTests.cs" />
+    <Compile Include="CSVDatabaseTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

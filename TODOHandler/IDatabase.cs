@@ -18,9 +18,10 @@ namespace TODOHandler
         bool CompleteTask(int ID);
 
         /// <summary>
-        /// Adds a line at the end. ID becomes the next unused one.
+        /// Adds a task at the end. ID becomes the next unused one.
         /// </summary>
-        /// <param name="line"></param>
-        void Add(List<string> line);
+        /// <param name="description"></param>
+        /// <param name="due"></param>
+        void Add(string description, string due);
     }
 }
