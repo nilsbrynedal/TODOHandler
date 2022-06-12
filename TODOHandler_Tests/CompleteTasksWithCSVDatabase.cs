@@ -7,16 +7,9 @@ namespace TODOHandler_Tests
     [TestClass]
     public class CompleteTasksWithCSVDatabase : CompleteTasksBase
     {
-        private ToDoHandler instance;
-
-        protected override ToDoHandler GetHandler()
+        public override IDatabase GetInstance()
         {
-            if(instance == null)
-            {
-                instance = new ToDoHandler(new CSVDatabase(new MemoryStream()), writer);
-            }
-            
-            return instance;
+            return new CSVDatabase(new MemoryStream());
         }
     }
 }

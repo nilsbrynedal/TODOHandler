@@ -11,7 +11,23 @@ namespace TODOHandler_Tests
         protected MemoryStream consoleStream;
         protected StreamWriter writer;
 
-        protected abstract ToDoHandler GetHandler();
+        private ToDoHandler instance;
+
+        protected ToDoHandler GetHandler()
+        {
+            if (instance == null)
+            {
+                instance = new ToDoHandler(GetInstance(), writer);
+            }
+
+            return instance;
+        }
+
+        /// <summary>
+        /// Override this method to implement the tests.
+        /// </summary>
+        /// <returns>Shall return an instance of the IDatabase</returns>
+        public abstract IDatabase GetInstance();
 
         [TestInitialize]
         public void SetUp()
