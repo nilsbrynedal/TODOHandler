@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddTasksTests.cs" />
+    <Compile Include="BaseTestClasses\AbstractTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadTasks.cs" />
     <Compile Include="BaseTestClasses\CompleteTasksBase.cs" />

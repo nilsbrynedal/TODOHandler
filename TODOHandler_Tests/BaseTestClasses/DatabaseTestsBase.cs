@@ -7,14 +7,8 @@ namespace TODOHandler_Tests
     /// Tests for any instance of IDatabase.
     /// </summary>
     [TestClass]
-    public abstract class DatabaseTestsBase
+    public abstract class DatabaseTestsBase : AbstractTestBase
     {
-        /// <summary>
-        /// Override this method to implement the tests
-        /// </summary>
-        /// <returns></returns>
-        public abstract IDatabase GetInstance();
-
         [TestMethod]
         public void ShallHaveNoTasksInitially()
         {
