@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 /// <summary>
 /// Test driven implementation of http://www.tddbuddy.com/katas/Todo%20List.pdf
@@ -41,6 +42,19 @@ namespace TODOHandler
             {
                 AddTask(args[2], args[4]);
             }
+            else if(args[0] == "subtask")
+            {
+                int taskID = int.Parse(args[6]);
+                if (TaskExists(taskID))
+                {
+                    AddSubTask(taskID, args[2], args[4]);
+                    consoleWriter?.Write("Subtask added.\n");
+                }
+                else
+                {
+                    consoleWriter?.Write("Error: Task ID does not exist.\n");
+                }
+            }
             else if(args[0] == "-c")  // completed task
             {
                 CompleteTask(args[1]);
@@ -51,6 +65,13 @@ namespace TODOHandler
             }
             consoleWriter?.Flush();
         }
+
+        private void AddSubTask(int taskID, string description, string due)
+        {
+            
+        }
+
+        private bool TaskExists(int ID) => database.ReadAllTasks().Exists(task => task.ID == ID);
 
         private static bool ShowAllTasks(string[] args)
         {

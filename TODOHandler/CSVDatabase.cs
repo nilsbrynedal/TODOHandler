@@ -41,7 +41,7 @@ namespace TODOHandler
 
                 tasks.Add(task);
             }
-            reader.Close();
+            
             return tasks;
         }
 

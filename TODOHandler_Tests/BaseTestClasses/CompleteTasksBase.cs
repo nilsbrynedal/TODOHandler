@@ -1,33 +1,14 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
 using System.Text;
-using TODOHandler;
 
 namespace TODOHandler_Tests
 {
     [TestClass]
-    public abstract class CompleteTasksBase : AbstractTestBase
+    public abstract class CompleteTasksBase : ToDoHandlerTestClassBase
     {
-        protected MemoryStream consoleStream;
-        protected StreamWriter writer;
-
-        private ToDoHandler instance;
-
-        protected ToDoHandler GetHandler()
-        {
-            if (instance == null)
-            {
-                instance = new ToDoHandler(GetInstance(), writer);
-            }
-
-            return instance;
-        }
-
         [TestInitialize]
         public void SetUp()
         {
-            consoleStream = new MemoryStream();
-            writer = new StreamWriter(consoleStream);
             string[] arguments = new string[]
             {
                 "task",
@@ -93,8 +74,7 @@ namespace TODOHandler_Tests
                 "1"
             };
             GetHandler().Handle(arguments);
-            consoleStream.Position = 0;
-
+            
             // list tasks
             arguments = new string[]
             {
@@ -104,7 +84,7 @@ namespace TODOHandler_Tests
             GetHandler().Handle(arguments);
 
             var content = Encoding.ASCII.GetString(consoleStream.ToArray());
-            Assert.AreEqual("ID: 1\nTask: Complete Application\nDue: Complete\nID: 2\nTask: Take a walk\nDue: 2022-04-01\n", content);
+            Assert.AreEqual("Task completed.\nID: 1\nTask: Complete Application\nDue: Complete\nID: 2\nTask: Take a walk\nDue: 2022-04-01\n", content);
         }
 
 
