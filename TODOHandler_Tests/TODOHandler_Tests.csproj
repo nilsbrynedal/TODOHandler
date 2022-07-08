@@ -61,7 +61,7 @@
     <Compile Include="CSVDatabaseTests.cs" />
     <Compile Include="CompleteTasksWithCSVDatabase.cs" />
     <Compile Include="SomeTasksCompletedWithCSVDatabase.cs" />
-    <Compile Include="ExcelDatabaseTests.cs" />
+    <Compile Include="XMLDatabaseTests.cs" />
     <Compile Include="SubtasksTestsWithCSVDatabase.cs" />
   </ItemGroup>
   <ItemGroup>

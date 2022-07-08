@@ -5,8 +5,8 @@
 /// 
 /// TODO:
 /// * Add tests for arbitrary implementation of IDatabase. DONE (more or less...)
-/// * Create tests for some other implementation of IDatabase, e.g. based on Excel. DONE (some tests added)
-/// * Add some other implementation of IDatabase, e.g. based on Excel, STARTED
+/// * Create tests for some other implementation of IDatabase, e.g. based on Excel or something else. DONE (some tests added)
+/// * Add some other implementation of IDatabase, STARTED
 /// * Add subtasks
 /// 
 /// </summary>

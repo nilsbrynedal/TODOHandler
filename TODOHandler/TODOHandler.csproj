@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSVDatabase.cs" />
-    <Compile Include="ExcelDatabase.cs" />
+    <Compile Include="XMLDatabase.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
