@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 /// <summary>
 /// Test driven implementation of http://www.tddbuddy.com/katas/Todo%20List.pdf
@@ -15,7 +14,6 @@ namespace TODOHandler
 {
     public class ToDoHandler
     {
-        private const string SubtaskTag = "<sub>";
         private readonly TextWriter consoleWriter;
         private readonly IDatabase database;
 
@@ -41,12 +39,27 @@ namespace TODOHandler
 
             if (args[0] == "task")
             {
-                AddTask(args[2], args[4]);
+                if (args[2].Contains("|"))
+                {
+                    consoleWriter?.Write("Task description contains forbidden character '|'\n");
+                }
+                else
+                {
+                    AddTask(args[2], args[4]);
+                    consoleWriter?.Write("Task added.\n");
+                }
             }
-            else if(args[0] == "subtask")
+            else if (args[0] == "subtask")
             {
-                int taskID = int.Parse(args[6]);
-                AddSubTask(taskID, args[2], args[4]);
+                if (args[2].Contains("|"))
+                {
+                    consoleWriter?.Write("Task description contains forbidden character '|'\n");
+                }
+                else
+                {
+                    int taskID = int.Parse(args[6]);
+                    AddSubTask(taskID, args[2], args[4]);
+                }
             }
             else if(args[0] == "-c")  // completed task
             {
@@ -56,6 +69,7 @@ namespace TODOHandler
             {
                 ReadTasks(ShowAllTasks(args));
             }
+
             consoleWriter?.Flush();
         }
 
@@ -71,14 +85,12 @@ namespace TODOHandler
                 return;
             }
 
-            // A task with a description starting with SubtaskTag will become a subtask of the previous
-            // task (that was not a subtask)
+            // A task with a description starting with "|<id number>|" will become a subtask of the task
+            // with that id number
 
-            AddTask(SubtaskTag + description, due);
+            AddTask("|" + taskID.ToString() + "|" + description, due);
             consoleWriter?.Write("Subtask added.\n");
         }
-
-        private bool TaskExists(int ID) => database.ReadAllTasks().Exists(task => task.ID == ID);
 
         private static bool ShowAllTasks(string[] args)
         {
@@ -101,39 +113,33 @@ namespace TODOHandler
         private void ReadTasks(bool allTasks)
         {
             var tasks = database.ReadAllTasks();
+            var subtasks = tasks.FindAll(t => t.Description.StartsWith("|"));
+            
+            foreach (var subtask in subtasks)
+            {
+                tasks.Remove(subtask);
 
-            if(!allTasks)
+                var splits = subtask.Description.Split('|');
+
+                int taskID = int.Parse(splits[1]);
+                subtask.Description = splits[2];
+                tasks.Find(t => t.ID == taskID).AddSubTask(subtask);
+            }
+
+            if (!allTasks)
             {
                 tasks = tasks.FindAll(task => task.Due != "Complete");
             }
 
-            bool subtasks = false;
             foreach (var task in tasks)
             {
-                string toPrint = "";
-                if (task.Description.StartsWith(SubtaskTag))
-                {
-                    if(!subtasks)
-                    {
-                        toPrint = "< Subtasks >\n";
-                        subtasks = true;
-                    }
-                    toPrint += "ID: " + task.ID.ToString() + "\nSubtask: " + task.Description.Substring(SubtaskTag.Length) + "\nDue: " + task.Due + "\n"; ;
-                }
-                else
-                {
-                    subtasks = false;
-                    toPrint = "ID: " + task.ID.ToString() + "\nTask: " + task.Description + "\nDue: " + task.Due + "\n";
-                }
-
-                consoleWriter?.Write(toPrint);
+                consoleWriter?.Write(task.Print());
             }
         }
 
         private void AddTask(string description, string due)
         {
             database.Add(description, due);
-            consoleWriter?.Write("Task added.\n");
         }
     }
 }
