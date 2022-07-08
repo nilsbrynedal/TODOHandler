@@ -7,7 +7,7 @@ using System.IO;
 /// TODO:
 /// * Add tests for arbitrary implementation of IDatabase. DONE (more or less...)
 /// * Create tests for some other implementation of IDatabase, e.g. based on Excel. DONE (some tests added)
-/// * Add some other implementation of IDatabase, e.g. based on Excel
+/// * Add some other implementation of IDatabase, e.g. based on Excel, STARTED
 /// * Add subtasks
 /// 
 /// </summary>
@@ -15,6 +15,7 @@ namespace TODOHandler
 {
     public class ToDoHandler
     {
+        private const string SubtaskTag = "<sub>";
         private readonly TextWriter consoleWriter;
         private readonly IDatabase database;
 
@@ -45,15 +46,7 @@ namespace TODOHandler
             else if(args[0] == "subtask")
             {
                 int taskID = int.Parse(args[6]);
-                if (TaskExists(taskID))
-                {
-                    AddSubTask(taskID, args[2], args[4]);
-                    consoleWriter?.Write("Subtask added.\n");
-                }
-                else
-                {
-                    consoleWriter?.Write("Error: Task ID does not exist.\n");
-                }
+                AddSubTask(taskID, args[2], args[4]);
             }
             else if(args[0] == "-c")  // completed task
             {
@@ -66,9 +59,23 @@ namespace TODOHandler
             consoleWriter?.Flush();
         }
 
-        private void AddSubTask(int taskID, string description, string due)
+        public void AddSubTask(int taskID, string description, string due)
         {
-            
+            var tasks = database.ReadAllTasks();
+            int ID = tasks.FindIndex(t => t.ID == taskID);
+
+            // check for missing main Task
+            if (ID == -1)
+            {
+                consoleWriter?.Write("Error: Task ID does not exist.\n");
+                return;
+            }
+
+            // A task with a description starting with SubtaskTag will become a subtask of the previous
+            // task (that was not a subtask)
+
+            AddTask(SubtaskTag + description, due);
+            consoleWriter?.Write("Subtask added.\n");
         }
 
         private bool TaskExists(int ID) => database.ReadAllTasks().Exists(task => task.ID == ID);
@@ -100,9 +107,25 @@ namespace TODOHandler
                 tasks = tasks.FindAll(task => task.Due != "Complete");
             }
 
+            bool subtasks = false;
             foreach (var task in tasks)
             {
-                string toPrint = "ID: " + task.ID.ToString() + "\nTask: " + task.Description + "\nDue: " + task.Due + "\n";
+                string toPrint = "";
+                if (task.Description.StartsWith(SubtaskTag))
+                {
+                    if(!subtasks)
+                    {
+                        toPrint = "< Subtasks >\n";
+                        subtasks = true;
+                    }
+                    toPrint += "ID: " + task.ID.ToString() + "\nSubtask: " + task.Description.Substring(SubtaskTag.Length) + "\nDue: " + task.Due + "\n"; ;
+                }
+                else
+                {
+                    subtasks = false;
+                    toPrint = "ID: " + task.ID.ToString() + "\nTask: " + task.Description + "\nDue: " + task.Due + "\n";
+                }
+
                 consoleWriter?.Write(toPrint);
             }
         }

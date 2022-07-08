@@ -61,7 +61,7 @@ namespace TODOHandler_Tests.BaseTestClasses
 
             // then
             var contents = Encoding.ASCII.GetString(consoleStream.ToArray());
-            Assert.AreEqual("ID: 1\nTask: Complete Application\nDue: 2018-04-01\n< Subtasks >\nID: 2\nSubtask: My subtask\nDue:2018-01-01\n", contents);
+            Assert.AreEqual("ID: 1\nTask: Complete Application\nDue: 2018-04-01\n< Subtasks >\nID: 2\nSubtask: My subtask\nDue: 2018-01-01\n", contents);
         }
 
         [TestMethod]
